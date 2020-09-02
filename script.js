@@ -124,7 +124,7 @@
             }
         }
 
-        this.registerForm = function registerForm() {
+        this.registerForm = function registerForm(cb) {
             const registerDiv = document.querySelector(
                 '[data-rebase-form="register"]'
             );
@@ -164,7 +164,7 @@
             });
         }
 
-        this.registerClient = function registerClient() {
+        this.registerClient = function registerClient(cb) {
             const registerClientDiv = document.querySelector(
                 '[data-rebase-form="registerClient"]'
             );
@@ -175,7 +175,7 @@
                 (ev) => {
                     const url = "/registerClient";
                     const data = getFormData(
-                        registerDiv,
+                        registerClientDiv,
                         [{
                             name: "clientName",
                             path: '[data-rebase-field="clientName"]'
@@ -183,7 +183,7 @@
                             action: "registerClient"
                         }
                     );
-                    self.invokeRebaseAsync(url, "POST", data, token)
+                    self.invokeRebaseAsync(url, "POST", data)
                         .then(
                             (response) => response.json(),
                             (err) => console.log(err)
@@ -242,6 +242,7 @@
 
         this.renderLoop = function renderLoop(cb) {
             this.loginForm(cb);
+            this.registerForm(cb);
             this.registerClient(cb);
         }
     }
@@ -254,29 +255,22 @@
         appEl.appendChild(template.content.cloneNode(true));
     }
 
-
-    /**
-     * Route to a specific page (template)
-     */
-    function gotoRoute(id) {
-
-
-
-    }
-
-
     /**
      * Controls the actions of the page
      */
-    function pageController() {
+    function pageController(nextPage) {
         RebaseAuth.token = CookieMonster.getCookie('rebaseToken');
         RebaseAuth.clientId = CookieMonster.getCookie('rebaseClientId');
-        if (RebaseAuth.isAuthenticated() && !RebaseAuth.hasClientId()) {
+        if (RebaseAuth.isAuthenticated() && !RebaseAuth.hasClientId() && nextPage == '') {
           RebaseAuth.getMe((action, data) => {
               if (action == "me") {
+                if (data.data.user.clients.length == 0) {
+                  setTimeout(() => pageController('registerClient'), 300);
+                } else {
                   const clientId = data.data.user.clients[0].client_id;
                   CookieMonster.setCookie('rebaseClientId', clientId, 1);
-                  setTimeout(() => pageController(), 300);
+                  setTimeout(() => pageController(''), 300);
+                }
               }
           });
         } else if (RebaseAuth.isAuthenticated() && RebaseAuth.hasClientId()) {
@@ -289,17 +283,36 @@
             $('[data-rebase-action="cancel-edit"]').click(($ev) => $('#editModal').modal('toggle'));
             MyRebaseClient.dataTable();
           }, 300);
+        } else if (nextPage == 'register') {
+          renderTemplate('registerTemplate');
+          setTimeout(() => {
+            $('[data-rebase-action="goto-login"]').click(($ev) => {
+              pageController('login');
+            })
+          }, 300);
+        } else if (nextPage == 'registerClient') {
+          renderTemplate('registerClientTemplate');
+          setTimeout(() => {
+            $('[data-rebase-action="goto-login"]').click(($ev) => {
+              pageController('login');
+            })
+          }, 300);
         } else {
             renderTemplate('loginTemplate');
+            setTimeout(() => {
+              $('[data-rebase-action="goto-register"]').click(($ev) => pageController('register'));
+            }, 300);
         }
 
         RebaseAuth.renderLoop((action, data) => {
 
             if (action === 'login') {
-                CookieMonster.setCookie('rebaseToken', data.data.JWT, 1);
+              CookieMonster.setCookie('rebaseToken', data.data.JWT, 1);
+            } else if (action === 'registerUser') {
+              pageController('login');
             }
 
-            setTimeout(() => pageController(), 300);
+            setTimeout(() => pageController(''), 300);
         });
     }
 
@@ -307,13 +320,13 @@
         RebaseAuth.logoff();
         CookieMonster.deleteCookie('rebaseToken');
         CookieMonster.deleteCookie('rebaseClientId');
-        setTimeout(() => pageController(), 300);
+        setTimeout(() => pageController(''), 300);
     }
 
     window.RebaseAuth = new _RebaseAuth();
     window.CookieMonster = new _CookieMonster();
     window.MyRebaseClient = null;
 
-    document.addEventListener('DOMContentLoaded', ($ev) => pageController());
+    document.addEventListener('DOMContentLoaded', ($ev) => pageController(''));
 
 })()

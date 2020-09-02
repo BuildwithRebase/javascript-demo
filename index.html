@@ -53,7 +53,7 @@
                                 </div>
                                 <div class="form-group mb-0 mt-4">
                                     <div class="col-sm-12 justify-content-center d-flex">
-                                        <p>Don't have an account? <a href="authentication-register1.html" class="text-info font-weight-normal ml-1">Sign Up</a></p>
+                                        <p>Don't have an account? <button class="btn" type="button" data-rebase-action="goto-register">Sign Up</button></p>
                                     </div>
                                 </div>
                             </form>
@@ -75,43 +75,35 @@
                     <!-- Form -->
                     <div class="row">
                         <div class="col-12">
-                            <form class="form-horizontal mt-3 form-material" action="index.html">
+                            <form data-rebase-form="register" class="form-horizontal mt-3 form-material" action="index.html">
                                 <div class="form-group mb-3">
                                     <div class="col-xs-12">
-                                        <input class="form-control" type="text" required="" placeholder="Name">
+                                        <input class="form-control" data-rebase-field="firstName" type="text" required="" placeholder="First name">
+                                    </div>
+                                </div>
+                                <div class="form-group mb-3">
+                                    <div class="col-xs-12">
+                                        <input class="form-control" data-rebase-field="lastName" type="text" required="" placeholder="Last name">
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 ">
                                     <div class="col-xs-12">
-                                        <input class="form-control" type="text" required="" placeholder="Email">
+                                        <input class="form-control" data-rebase-field="email" type="text" required="" placeholder="Email">
                                     </div>
                                 </div>
                                 <div class="form-group mb-3 ">
                                     <div class="col-xs-12">
-                                        <input class="form-control" type="password" required="" placeholder="Password">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <div class="col-xs-12">
-                                        <input class="form-control" type="password" required="" placeholder="Confirm Password">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <div class="">
-                                        <div class="checkbox checkbox-success pt-0">
-                                            <input id="checkbox-signup" type="checkbox" class="chk-col-indigo material-inputs">
-                                            <label for="checkbox-signup"> I agree to all <a href="#">Terms</a></label>
-                                        </div>
+                                        <input class="form-control" data-rebase-field="password" type="password" required="" placeholder="Password">
                                     </div>
                                 </div>
                                 <div class="form-group text-center mb-3">
                                     <div class="col-xs-12">
-                                        <button class="btn btn-info btn-lg btn-block text-uppercase waves-effect waves-light" type="submit">Sign Up</button>
+                                        <button data-rebase-action="register" class="btn btn-info btn-lg btn-block text-uppercase waves-effect waves-light" type="button">Sign Up</button>
                                     </div>
                                 </div>
                                 <div class="form-group mb-0 mt-2 ">
                                     <div class="col-sm-12 text-center ">
-                                        Already have an account? <a href="authentication-login1.html " class="text-info ml-1 ">Sign In</a>
+                                        Already have an account? <button type="button" data-rebase-action="goto-login">Sign In</button>
                                     </div>
                                 </div>
                             </form>
@@ -132,43 +124,20 @@
                     <!-- Form -->
                     <div class="row">
                         <div class="col-12">
-                            <form class="form-horizontal mt-3 form-material" action="index.html">
+                            <form data-rebase-form="registerClient" class="form-horizontal mt-3 form-material">
                                 <div class="form-group mb-3">
                                     <div class="col-xs-12">
-                                        <input class="form-control" type="text" required="" placeholder="Name">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 ">
-                                    <div class="col-xs-12">
-                                        <input class="form-control" type="text" required="" placeholder="Email">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3 ">
-                                    <div class="col-xs-12">
-                                        <input class="form-control" type="password" required="" placeholder="Password">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <div class="col-xs-12">
-                                        <input class="form-control" type="password" required="" placeholder="Confirm Password">
-                                    </div>
-                                </div>
-                                <div class="form-group mb-3">
-                                    <div class="">
-                                        <div class="checkbox checkbox-success pt-0">
-                                            <input id="checkbox-signup" type="checkbox" class="chk-col-indigo material-inputs">
-                                            <label for="checkbox-signup"> I agree to all <a href="#">Terms</a></label>
-                                        </div>
+                                        <input data-rebase-field="clientName" class="form-control" type="text" required="" placeholder="Client name">
                                     </div>
                                 </div>
                                 <div class="form-group text-center mb-3">
                                     <div class="col-xs-12">
-                                        <button class="btn btn-info btn-lg btn-block text-uppercase waves-effect waves-light" type="submit">Sign Up</button>
+                                        <button data-rebase-action="registerClient" class="btn btn-info btn-lg btn-block text-uppercase waves-effect waves-light" type="button">Register client</button>
                                     </div>
                                 </div>
                                 <div class="form-group mb-0 mt-2 ">
                                     <div class="col-sm-12 text-center ">
-                                        Already have an account? <a href="authentication-login1.html " class="text-info ml-1 ">Sign In</a>
+                                        Return to <button type="button" data-rebase-action="goto-login">Sign In</button>
                                     </div>
                                 </div>
                             </form>
